@@ -1,17 +1,20 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TabsPage } from './tabs.page';
+import { AuthGuard } from '../auth/auth.guard';
 
 const routes: Routes = [
   {
     path: 'tabs',
     component: TabsPage,
+    canLoad: [AuthGuard],
     children: [
       {
         path: 'tab1',
         children: [
           {
             path: '',
+            canLoad: [AuthGuard],
             loadChildren: '../tab1/tab1.module#Tab1PageModule'
           }
         ]
@@ -41,6 +44,7 @@ const routes: Routes = [
       }
     ]
   },
+  { path: 'auth', loadChildren: '../auth/auth.module#AuthPageModule' },
   {
     path: '',
     redirectTo: '/tabs/tab1',
@@ -49,9 +53,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forChild(routes)
-  ],
+  imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
 export class TabsPageRoutingModule {}
